@@ -1,9 +1,9 @@
 package main
 
 import (
+	flutterService "Acura/services"
 	"fmt"
 	"os"
-	"os/exec"
 )
 
 func main() {
@@ -31,21 +31,5 @@ func main() {
 	}
 	fmt.Println("Remote:", remote)
 	fmt.Println("Framework:", framework)
-	cmd := exec.Command("rsync", "-avz",
-		"--include="+projName+"/pubspec.yaml",
-		"--include="+projName+"/pubspec.lock",
-		"--include="+projName+"/lib/***",
-		"--include="+projName+"/assets/***",
-		"--include="+projName+"/ios/***",
-		"--include=lib/config/*",
-		"--exclude="+projName+"/*",
-		"../",
-		fmt.Sprintf("%s:~/Documents/%s", remote, projName),
-	)
-	output, err := cmd.Output()
-	if err != nil {
-		fmt.Println("Error executing rsync:", err)
-		return
-	}
-	fmt.Println("Result:", output)
+	flutterService.ExportProject(projName, remote)
 }
