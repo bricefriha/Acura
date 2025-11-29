@@ -9,6 +9,7 @@ import (
 func main() {
 	var remote string
 	framework := "flutter"
+	dir := "./"
 	argsCount := len(os.Args)
 	projName := "my_flutter_project" // fake for testing
 
@@ -25,11 +26,19 @@ func main() {
 				if i+1 < argsCount {
 					framework = string(os.Args[i+1])
 				}
+			case "-dir":
+				if i+1 < argsCount {
+					dir = string(os.Args[i+1])
+				}
 			}
 
 		}
 	}
 	fmt.Println("Remote:", remote)
 	fmt.Println("Framework:", framework)
-	flutterService.ExportProject(projName, remote)
+
+	if framework == "flutter" {
+		flutterService.ExportProject(projName, remote, dir)
+
+	}
 }
